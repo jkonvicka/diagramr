@@ -8,4 +8,4 @@ Javascript UML Class Diagram composer module
 
 
 ## CI/CD deployment
-[http://localhost/diagramr/](http://localhost/diagramr/)
+[https://konvicka.php5.cz/diagramr/](https://konvicka.php5.cz/diagramr/)
