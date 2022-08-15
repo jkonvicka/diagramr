@@ -40,8 +40,26 @@ function nodeSelectedInfo()
 document.getElementById("AddProperty").onclick = function(){
     if(nodeSelectedInfo())
     {
-        classDiagram.addNodeProperty(selectedObject.key, { name: "AA", type: "String", visibility: "public" });
+        var propertyName = document.getElementById('propertyName').value;
+        if(propertyName == ''){
+            showError('Property name is null or empty', true);
+            return;
+        }
+        var propertyDefault = document.getElementById('propertyDefault').value;
+        var propertyVisibility = document.getElementById('flexRadioPropertyPrivate').checked ?
+                                    'private' : 'public';
+        var propertyDataTypeSelector = document.getElementById('propertyDataType');
+        var propertyDataType = propertyDataTypeSelector.options[propertyDataTypeSelector.selectedIndex].value;
+        classDiagram.addNodeProperty(selectedObject.key, 
+            { 
+                name: propertyName,
+                type: propertyDataType,
+                visibility: propertyVisibility,
+                default: propertyDefault
+            });
         console.log('Added property')
+    }else{
+        showError('Please select node', false);
     }
     
 };
@@ -53,4 +71,23 @@ document.getElementById("ShowProperties").onclick = function(){
         //alert(JSON.stringify(properties));
         console.log(properties);
     }
+    else{
+        showError('Please select node', false);
+    }
 };
+
+
+function showError(errorMessage, logError){
+
+    if(logError){
+        console.error(errorMessage);
+    }
+    var message = document.createElement("div");
+    message.innerHTML = '<div class="alert alert-danger alert-dismissible fade show " role="alert">' +
+                            errorMessage +
+                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">' +
+                        '</button></div>';
+
+    var errorContainer = document.getElementById("error-container-div");
+    errorContainer.appendChild(message);
+}

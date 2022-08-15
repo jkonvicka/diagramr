@@ -1,0 +1,16 @@
+#diagramDiv{
+    width:500px; 
+    height:500px; 
+    background-color: #DAE4E4;
+    margin: auto;
+}
+
+.row{
+    padding: 5px;
+}
+
+.error-container{
+    position:absolute;
+    top:10px;
+    right:20px;
+}

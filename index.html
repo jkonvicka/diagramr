@@ -1,27 +1,78 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Diagramr</title>
-    </head>
-    <body onload="">
-
-        <div id="diagramDiv"></div>
-
-
-        <button id="AddProperty">AddProperty</button>
-        <button id="ShowProperties">ShowProperties</button>
-    </body>
+   <head>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+      <link href="./css/style.css" rel="stylesheet">
+      <title>Diagramr</title>
+   </head>
+   <body onload="">
+      <div class="container">
+         <div class="error-container" id="error-container-div">
+         </div>
+      </div>
+      <div class="container text-center">
+         <div class="row">
+            <div class="col">
+               <div id="diagramDiv"></div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col">
+            </div>
+         </div>
+         <div class="row">
+            <div class="col">
+               <button type="button" class="btn btn-primary" id="AddProperty">AddProperty</button>
+               <form class="text-left">
+                  <div class="mb-3 row">
+                     <label for="propertyName" class="col-sm-2 col-form-label">Name</label>
+                     <div class="col-sm-10">
+                        <input type="text" class="form-control-plaintext" id="propertyName" value="">
+                     </div>
+                  </div>
+                  <div class="mb-3 row">
+                     <label for="propertyVisibility" class="col-sm-2 col-form-label">Visibility</label>
+                     <div class="col-sm-10">
+                        <div class="form-check">
+                           <input class="form-check-input" type="radio" name="flexRadioProperty" id="flexRadioPropertyPrivate">
+                           <label class="form-check-label" for="flexRadioPropertyPrivate1">
+                           Private
+                           </label>
+                        </div>
+                        <div class="form-check">
+                           <input class="form-check-input" type="radio" name="flexRadioProperty" id="flexRadioPropertyPublic" checked>
+                           <label class="form-check-label" for="flexRadioPropertyPublic">
+                           Public
+                           </label>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="mb-3 row">
+                     <select class="form-select" aria-label="Default select example" id="propertyDataType">
+                        <option value="bool">Bool</option>
+                        <option selected value="string">String</option>
+                        <option value="int">Int</option>
+                     </select>
+                  </div>
+                  <div class="mb-3 row">
+                     <label for="propertyDefault" class="col-sm-2 col-form-label">Default</label>
+                     <div class="col-sm-10">
+                        <input type="text" class="form-control-plaintext" id="propertyDefault" value="">
+                     </div>
+                  </div>
+               </form>
+            </div>
+            <div class="col">
+               <button type="button" class="btn btn-primary" id="ShowProperties">ShowProperties</button>
+            </div>
+            <div class="col">
+               Column
+            </div>
+         </div>
+      </div>
+   </body>
 </html>
-
-
 <script src="https://unpkg.com/gojs/release/go-debug.js"></script>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 <script type="module" src="./index.js"></script>
-
-<style>
-    #diagramDiv{
-        width:500px; 
-        height:500px; 
-        background-color: #DAE4E4;
-        margin: auto;
-    }
-</style>
