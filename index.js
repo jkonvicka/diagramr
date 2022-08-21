@@ -1,4 +1,4 @@
-import { ClassDiagram, selectedObject } from './ClassDiagram.js';
+import { ClassDiagram, selectedObject, reloadPropertyListIntoHtmlSelect } from './ClassDiagram.js';
 
 var classDiagram = null;
 
@@ -27,7 +27,8 @@ function nodeSelectedInfo()
 {
     if(selectedObject == null)
     {
-        console.error('Node not selected');
+        console.warn('Node not selected');
+        showMessage('Please select node', false, 'alert-dark');
         return false;
     }
     return true;
@@ -36,13 +37,12 @@ function nodeSelectedInfo()
 
 
 //HOOKS 
-
 document.getElementById("AddProperty").onclick = function(){
     if(nodeSelectedInfo())
     {
         var propertyName = document.getElementById('propertyName').value;
         if(propertyName == ''){
-            showError('Property name is null or empty', true);
+            showMessage('Property name is null or empty', true);
             return;
         }
         var propertyDefault = document.getElementById('propertyDefault').value;
@@ -50,6 +50,10 @@ document.getElementById("AddProperty").onclick = function(){
                                     'private' : 'public';
         var propertyDataTypeSelector = document.getElementById('propertyDataType');
         var propertyDataType = propertyDataTypeSelector.options[propertyDataTypeSelector.selectedIndex].value;
+        if (selectedObject.properties.some(e => e.name === propertyName)) {
+            showMessage('This node already contains property withthat name', true, 'alert-warning');
+            return;
+        }
         classDiagram.addNodeProperty(selectedObject.key, 
             { 
                 name: propertyName,
@@ -57,9 +61,26 @@ document.getElementById("AddProperty").onclick = function(){
                 visibility: propertyVisibility,
                 default: propertyDefault
             });
+        reloadPropertyListIntoHtmlSelect('selectedNodePropertyList');
         console.log('Added property')
+        showMessage('Property added', false, 'alert-success');
     }else{
-        showError('Please select node', false);
+        //showMessage('Please select node', false, 'alert-dark');
+    }
+    
+};
+
+document.getElementById("RemoveProperty").onclick = function(){
+    if(nodeSelectedInfo())
+    {
+        var propertyNameListSelector = document.getElementById('selectedNodePropertyList');
+        var propertyId = propertyNameListSelector.options[propertyNameListSelector.selectedIndex].value;
+        classDiagram.removeNodeProperty(selectedObject.key, parseInt(propertyId));
+        reloadPropertyListIntoHtmlSelect('selectedNodePropertyList');
+        console.log('Removed property');
+        showMessage('Property removed', false, 'alert-success');
+    }else{
+        //showMessage('Please select node', false, 'alert-dark');
     }
     
 };
@@ -72,18 +93,18 @@ document.getElementById("ShowProperties").onclick = function(){
         console.log(properties);
     }
     else{
-        showError('Please select node', false);
+        //showMessage('Please select node', false);
     }
 };
 
 
-function showError(errorMessage, logError){
+function showMessage(errorMessage, logError, type = 'alert-danger'){
 
     if(logError){
         console.error(errorMessage);
     }
     var message = document.createElement("div");
-    message.innerHTML = '<div class="alert alert-danger alert-dismissible fade show " role="alert">' +
+    message.innerHTML = '<div class="alert ' + type + ' alert-dismissible fade show " role="alert">' +
                             errorMessage +
                         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">' +
                         '</button></div>';

@@ -28,6 +28,30 @@ var linkdata = [
         
 ];
 
+// HTML MANIPULATOR FUNCTIONS
+function loadPropertyListIntoHtmlSelect(id){
+    var select = document.getElementById(id);
+    console.log(selectedObject);
+    var i = 0;
+    for (const _property of selectedObject.properties) {
+        //console.log(i + ' ' + _property.name);
+        var option = document.createElement("option");
+        option.text = _property.name;
+        option.value = i;
+        select.add(option);      
+        i++;
+    }
+}
+
+function unloadPropertyListIntoHtmlSelect(id){
+    var select = document.getElementById(id);
+    select.innerHTML = '';
+}
+
+export function reloadPropertyListIntoHtmlSelect(id){
+    unloadPropertyListIntoHtmlSelect(id);
+    loadPropertyListIntoHtmlSelect(id);
+}
 
 
 export class ClassDiagram {
@@ -41,6 +65,17 @@ export class ClassDiagram {
         if (data) {
             this.diagram.model.startTransaction("modified property");
             this.diagram.model.insertArrayItem(data.properties, -1, property);
+            // ... maybe modify other properties and/or other data objects
+            this.diagram.model.commitTransaction("modified property");
+        }
+    }
+
+    removeNodeProperty(key, id){
+        var data = this.diagram.model.findNodeDataForKey(key);
+        if (data) {
+            this.diagram.model.startTransaction("modified property");
+            console.log(id);
+            this.diagram.model.removeArrayItem(data.properties, id);
             // ... maybe modify other properties and/or other data objects
             this.diagram.model.commitTransaction("modified property");
         }
@@ -201,6 +236,7 @@ export class ClassDiagram {
         if (!(part instanceof go.Link))
         {
             selectedObject = part.data;
+            loadPropertyListIntoHtmlSelect('selectedNodePropertyList');
             console.log('Selected object with key: ' + selectedObject.key);
         }
         });
@@ -209,6 +245,7 @@ export class ClassDiagram {
             function(e) 
             { 
                 selectedObject = null;
+                unloadPropertyListIntoHtmlSelect('selectedNodePropertyList');
                 console.log('Deselected object');
             });
         
