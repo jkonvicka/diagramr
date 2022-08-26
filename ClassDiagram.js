@@ -31,38 +31,41 @@ var bankAccNode = new Node(1, 'BankAccount');
 bankAccNode.addProperty('owner', 'string', 'public');
 bankAccNode.addMethod('deposit', 'public', [new NodeMethodParameter('amount', 'currency')]);
 
+var hello = new Node(2, 'hello');
+
 var nodedata = [
     bankAccNode,
+    hello
     
 ];
 
 var linkdata = [
-        
+    { from: 1, to: 2, relationship: "aggregation" },
 ];
 
 // HTML MANIPULATOR FUNCTIONS
-function loadPropertyListIntoHtmlSelect(id){
+function loadListIntoHtmlSelect(id, list){
     var select = document.getElementById(id);
     console.log(selectedObject);
     var i = 0;
-    for (const _property of selectedObject.properties) {
+    for (const _option of list) {
         //console.log(i + ' ' + _property.name);
         var option = document.createElement("option");
-        option.text = _property.name;
+        option.text = _option.name;
         option.value = i;
         select.add(option);      
         i++;
     }
 }
 
-function unloadPropertyListIntoHtmlSelect(id){
+function unloadListIntoHtmlSelect(id){
     var select = document.getElementById(id);
     select.innerHTML = '';
 }
 
-export function reloadPropertyListIntoHtmlSelect(id){
-    unloadPropertyListIntoHtmlSelect(id);
-    loadPropertyListIntoHtmlSelect(id);
+export function reloadListIntoHtmlSelect(id, list){
+    unloadListIntoHtmlSelect(id);
+    loadListIntoHtmlSelect(id, list);
 }
 
 
@@ -70,6 +73,16 @@ export class ClassDiagram {
     constructor(divID) {
         this.diagram = null;
         this.divID = divID;
+    }
+
+    addLink(from, to, relationship){
+        this.diagram.model.startTransaction("add link");
+        var link = {from, to, relationship};
+        console.log('Adding link');
+        console.log(link);
+        this.diagram.model.addLinkData(link);
+            // ... maybe modify other properties and/or other data objects
+        this.diagram.model.commitTransaction("add link");
     }
 
     addNode(name){
@@ -197,7 +210,10 @@ export class ClassDiagram {
                         fromSpot: go.Spot.AllSides,
                         toSpot: go.Spot.AllSides
                     },
-                    $(go.Shape, { fill: "lightyellow" }),
+                    $(go.Shape, 
+                        { 
+                            fill: "lightyellow"
+                        }),
                     $(go.Panel, "Table",
                         { defaultRowSeparatorStroke: "black" },
                         // header
@@ -241,18 +257,22 @@ export class ClassDiagram {
                     )
                     );
             
-                this.diagram.linkTemplate =
+                    this.diagram.linkTemplate =
                     $(go.Link,
-                    { routing: go.Link.Orthogonal },
-                    new go.Binding("isLayoutPositioned", "relationship", Converts.convertIsTreeLink),
-                    $(go.Shape),
-                    $(go.Shape, { scale: 1.3, fill: "white" },
-                        new go.Binding("fromArrow", "relationship", Converts.convertFromArrow)),
-                    $(go.Shape, { scale: 1.3, fill: "white" },
-                        new go.Binding("toArrow", "relationship", Converts.convertToArrow))
-                    );
-        this.setListener();
-    }
+                        { routing: go.Link.Orthogonal },
+                        new go.Binding("isLayoutPositioned", "relationship", Converts.convertIsTreeLink),
+                        $(go.Shape),
+                        $(go.Shape, { scale: 1.3, fill: "white" },
+                          new go.Binding("fromArrow", "relationship", Converts.convertFromArrow)),
+                        $(go.Shape, { scale: 1.3, fill: "white" },
+                          new go.Binding("toArrow", "relationship", Converts.convertToArrow))
+                      );
+
+                    
+                        this.setListener();
+                        loadListIntoHtmlSelect('classesFrom', this.diagram.model.nodeDataArray);
+                        loadListIntoHtmlSelect('classesTo', this.diagram.model.nodeDataArray);
+                    }
 
     setListener()
     {
@@ -261,10 +281,12 @@ export class ClassDiagram {
         var part = e.subject.part;
         if (!(part instanceof go.Link))
         {
-            unloadPropertyListIntoHtmlSelect('selectedNodePropertyList');
+            unloadListIntoHtmlSelect('selectedNodePropertyList');
             selectedObject = part.data;
-            loadPropertyListIntoHtmlSelect('selectedNodePropertyList');
+            loadListIntoHtmlSelect('selectedNodePropertyList', selectedObject.properties);
             console.log('Selected object with key: ' + selectedObject.key);
+        }
+        else{
         }
         });
 
@@ -272,7 +294,7 @@ export class ClassDiagram {
             function(e) 
             { 
                 selectedObject = null;
-                unloadPropertyListIntoHtmlSelect('selectedNodePropertyList');
+                unloadListIntoHtmlSelect('selectedNodePropertyList');
                 console.log('Deselected object');
             });
         

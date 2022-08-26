@@ -1,4 +1,4 @@
-import { ClassDiagram, selectedObject, reloadPropertyListIntoHtmlSelect } from './ClassDiagram.js';
+import { ClassDiagram, selectedObject, reloadListIntoHtmlSelect } from './ClassDiagram.js';
 import { Node } from './Node.js';
 
 var classDiagram = null;
@@ -62,7 +62,7 @@ document.getElementById("AddProperty").onclick = function(){
                 visibility: propertyVisibility,
                 default: propertyDefault
             });
-        reloadPropertyListIntoHtmlSelect('selectedNodePropertyList');
+        reloadListIntoHtmlSelect('selectedNodePropertyList', selectedObject.properties);
         console.log('Added property')
         showMessage('Property added', false, 'alert-success');
     }else{
@@ -77,7 +77,7 @@ document.getElementById("RemoveProperty").onclick = function(){
         var propertyNameListSelector = document.getElementById('selectedNodePropertyList');
         var propertyId = propertyNameListSelector.options[propertyNameListSelector.selectedIndex].value;
         classDiagram.removeNodeProperty(selectedObject.key, parseInt(propertyId));
-        reloadPropertyListIntoHtmlSelect('selectedNodePropertyList');
+        reloadListIntoHtmlSelect('selectedNodePropertyList', selectedObject.properties);
         console.log('Removed property');
         showMessage('Property removed', false, 'alert-success');
     }else{
@@ -113,6 +113,16 @@ document.getElementById("AddNode").onclick = function(){
 
     classDiagram.addNode(className);
   
+};
+
+document.getElementById("AddLink").onclick = function(){
+    var classFromListSelector = document.getElementById('classesFrom');
+    var classFrom = classFromListSelector.options[classFromListSelector.selectedIndex].value;
+    var relationListSelector = document.getElementById('relations');
+    var relation = relationListSelector.options[relationListSelector.selectedIndex].value;
+    var classToListSelector = document.getElementById('classesTo');
+    var classTo = classToListSelector.options[classToListSelector.selectedIndex].value;
+    classDiagram.addLink(parseInt(classFrom)+1, parseInt(classTo)+1, relation);
 };
 
 

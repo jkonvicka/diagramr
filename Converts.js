@@ -22,9 +22,11 @@ export class Converts{
 
     static convertToArrow(r) {
         switch (r) {
-        case "generalization": return "Triangle";
+        case "generalization":{
+            return "Triangle";
+        } 
         case "aggregation": return "StretchedDiamond";
-        default: return "";
+        default: return r;
         }
     }
 }
