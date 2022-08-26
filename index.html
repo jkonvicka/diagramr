@@ -23,16 +23,18 @@
          <div class="row">
             <div class="col">
                <button type="button" class="btn btn-primary" id="AddProperty">AddProperty</button>
-               <form class="text-left">
-                  <div class="mb-3 row">
-                     <label for="propertyName" class="col-sm-2 col-form-label">Name</label>
+               <form class="text-center">
+                  <div class="row justify-content-center">
+                     
                      <div class="col-sm-10">
-                        <input type="text" class="form-control-plaintext" id="propertyName" value="">
+                        <label for="propertyName" class="col-sm-2 col-form-label">Name</label>
+                        <input type="text" class="form-control text-center" id="propertyName" value="">
                      </div>
                   </div>
-                  <div class="mb-3 row">
-                     <label for="propertyVisibility" class="col-sm-2 col-form-label">Visibility</label>
+                  <div class="row justify-content-center">
+                     
                      <div class="col-sm-10">
+                        <label for="propertyVisibility" class="col-sm-2 col-form-label">Visibility</label>
                         <div class="form-check">
                            <input class="form-check-input" type="radio" name="flexRadioProperty" id="flexRadioPropertyPrivate">
                            <label class="form-check-label" for="flexRadioPropertyPrivate1">
@@ -47,31 +49,43 @@
                         </div>
                      </div>
                   </div>
-                  <div class="mb-3 row">
+                  <div class="row justify-content-center">
                      <select class="form-select" aria-label="Default select example" id="propertyDataType">
                         <option value="bool">Bool</option>
                         <option selected value="string">String</option>
                         <option value="int">Int</option>
                      </select>
                   </div>
-                  <div class="mb-3 row">
-                     <label for="propertyDefault" class="col-sm-2 col-form-label">Default</label>
+                  <div class="row justify-content-center">
+                     
                      <div class="col-sm-10">
-                        <input type="text" class="form-control-plaintext" id="propertyDefault" value="">
+                        <label for="propertyDefault" class="col-sm-2 col-form-label">Default</label>
+                        <input type="text" class="form-control" id="propertyDefault" value="">
                      </div>
                   </div>
                </form>
             </div>
             <div class="col">
                <button type="button" class="btn btn-primary" id="RemoveProperty">RemoveProperty</button>
-               <select class="form-select" id="selectedNodePropertyList">
-               </select>
+               <div class="row justify-content-center">
+                  
+                  <select class="form-select" id="selectedNodePropertyList">
+                  </select>
+               </div>
             </div>
             <div class="col">
                <button type="button" class="btn btn-primary" id="ShowProperties">ShowProperties</button>
             </div>
             <div class="col">
-               Column
+               <button type="button" class="btn btn-primary" id="AddNode">AddNode</button>
+                  <form class="text-center">
+                     <div class="row justify-content-center">
+                        <div class="col-sm-10">
+                           <label for="className" class="col-sm-2 col-form-label">Name</label>
+                           <input type="text" class="form-control text-center" id="className" value="">
+                        </div>
+                     </div>
+                  </form>
             </div>
          </div>
       </div>

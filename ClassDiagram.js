@@ -1,5 +1,7 @@
 import { Converts } from './Converts.js';
-
+import { Node } from './Node.js';
+import { NodeProperty } from "./NodeProperty.js";
+import { NodeMethodParameter } from "./NodeMethodParameter.js";
 
 var $ = go.GraphObject.make;
 
@@ -9,8 +11,8 @@ let diagram = null;
 
 export var selectedObject = null;
 
-var nodedata = [
-    {
+/*
+{
     key: 1,
     name: "BankAccount",
     properties: [
@@ -22,6 +24,16 @@ var nodedata = [
         { name: "withdraw", parameters: [{ name: "amount", type: "Currency" }], visibility: "public" }
     ]
     }
+
+*/
+
+var bankAccNode = new Node(1, 'BankAccount');
+bankAccNode.addProperty('owner', 'string', 'public');
+bankAccNode.addMethod('deposit', 'public', [new NodeMethodParameter('amount', 'currency')]);
+
+var nodedata = [
+    bankAccNode,
+    
 ];
 
 var linkdata = [
@@ -60,6 +72,16 @@ export class ClassDiagram {
         this.divID = divID;
     }
 
+    addNode(name){
+        this.diagram.model.startTransaction("add data");
+        var node = new Node(this.diagram.model.nodeDataArray.length + 1, name);
+        console.log('Adding node :');
+        console.log(node);
+        this.diagram.model.addNodeData(node);
+            // ... maybe modify other properties and/or other data objects
+        this.diagram.model.commitTransaction("add data");
+    }
+
     addNodeProperty(key, property){
         var data = this.diagram.model.findNodeDataForKey(key);
         if (data) {
@@ -84,6 +106,10 @@ export class ClassDiagram {
     getData(key){
         var data = this.diagram.model.findNodeDataForKey(key);
         return data;
+    }
+
+    getModel(){
+        return this.diagram.model;
     }
 
     render() {
@@ -235,6 +261,7 @@ export class ClassDiagram {
         var part = e.subject.part;
         if (!(part instanceof go.Link))
         {
+            unloadPropertyListIntoHtmlSelect('selectedNodePropertyList');
             selectedObject = part.data;
             loadPropertyListIntoHtmlSelect('selectedNodePropertyList');
             console.log('Selected object with key: ' + selectedObject.key);

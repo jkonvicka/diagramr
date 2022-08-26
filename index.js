@@ -1,4 +1,5 @@
 import { ClassDiagram, selectedObject, reloadPropertyListIntoHtmlSelect } from './ClassDiagram.js';
+import { Node } from './Node.js';
 
 var classDiagram = null;
 
@@ -51,7 +52,7 @@ document.getElementById("AddProperty").onclick = function(){
         var propertyDataTypeSelector = document.getElementById('propertyDataType');
         var propertyDataType = propertyDataTypeSelector.options[propertyDataTypeSelector.selectedIndex].value;
         if (selectedObject.properties.some(e => e.name === propertyName)) {
-            showMessage('This node already contains property withthat name', true, 'alert-warning');
+            showMessage('This node already contains property with that name', true, 'alert-warning');
             return;
         }
         classDiagram.addNodeProperty(selectedObject.key, 
@@ -97,6 +98,23 @@ document.getElementById("ShowProperties").onclick = function(){
     }
 };
 
+document.getElementById("AddNode").onclick = function(){
+
+    var className = document.getElementById('className').value;
+    if(className == ''){
+        showMessage('Class name is null or empty', true);
+        return;
+    }
+
+    if (classDiagram.getModel().nodeDataArray.some(e => e.name === className)) {
+        showMessage('This diagram already contains node with that name', true, 'alert-warning');
+        return;
+    }
+
+    classDiagram.addNode(className);
+  
+};
+
 
 function showMessage(errorMessage, logError, type = 'alert-danger'){
 
@@ -112,3 +130,5 @@ function showMessage(errorMessage, logError, type = 'alert-danger'){
     var errorContainer = document.getElementById("error-container-div");
     errorContainer.appendChild(message);
 }
+
+
