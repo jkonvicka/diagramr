@@ -38,6 +38,12 @@ function nodeSelectedInfo()
 
 
 //HOOKS 
+document.getElementById("GenerateCode").onclick = function(){
+    console.log("EXPORTING JSON");
+    var diagramJson = classDiagram.getJson();
+    console.log(diagramJson);
+};
+
 document.getElementById("AddProperty").onclick = function(){
     if(nodeSelectedInfo())
     {

@@ -40,13 +40,13 @@ var nodedata = [
 ];
 
 var linkdata = [
-    { from: 1, to: 2, relationship: "aggregation" },
+    //{ from: 1, to: 2, relationship: "aggregation" },
 ];
 
 // HTML MANIPULATOR FUNCTIONS
 function loadListIntoHtmlSelect(id, list){
     var select = document.getElementById(id);
-    console.log(selectedObject);
+    //console.log(selectedObject);
     var i = 0;
     for (const _option of list) {
         //console.log(i + ' ' + _property.name);
@@ -119,6 +119,12 @@ export class ClassDiagram {
     getData(key){
         var data = this.diagram.model.findNodeDataForKey(key);
         return data;
+    }
+
+    getJson(){
+        var nodeData =  this.diagram.model.nodeDataArray;
+        var linkData = this.diagram.model.linkDataArray;
+        return {nodeData, linkData};
     }
 
     getModel(){
@@ -297,6 +303,16 @@ export class ClassDiagram {
                 unloadListIntoHtmlSelect('selectedNodePropertyList');
                 console.log('Deselected object');
             });
+
+        this.diagram.addModelChangedListener(function(e) {
+                // ignore unimportant Transaction events
+                if (!e.isTransactionFinished) return;
+                //var json = e.model.toIncrementalJson(e);
+                //var data = e.model.toIncrementalData(e);
+                //console.log(data);
+                reloadListIntoHtmlSelect('classesFrom', e.model.nodeDataArray);
+                reloadListIntoHtmlSelect('classesTo', e.model.nodeDataArray);
+              });
         
     }
   }
