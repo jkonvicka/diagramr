@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using DiagramrCodeGenerator.Utils;
+using System.Text;
 
 namespace DiagramrCodeGenerator.Model
 {
@@ -11,9 +12,10 @@ namespace DiagramrCodeGenerator.Model
         public string ToCode()
         {
             var sb = new StringBuilder();
-            sb.Append($"{Visibility} {Name}(");
-            sb.Append(String.Join($", ", Parameters.Select(x => x.ToCode())));
-            sb.Append(")\n");
+            sb.AppendCodeLine($"{Visibility} {Name}({String.Join($", ", Parameters.Select(x => x.ToCode()))})");
+            sb.AppendCodeLine("{");
+            sb.AppendCodeLine("");
+            sb.AppendCodeLine("}");
             return sb.ToString();
         }
     }

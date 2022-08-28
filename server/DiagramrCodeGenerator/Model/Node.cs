@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using DiagramrCodeGenerator.Utils;
+using System.Text;
 
 namespace DiagramrCodeGenerator.Model
 {
@@ -12,11 +13,28 @@ namespace DiagramrCodeGenerator.Model
         public string ToCode()
         {
             var sb = new StringBuilder();
-            if(Properties != null)
+
+            sb.AppendCodeLine($"namespace Project");
+            sb.AppendCodeLine("{");
+            CodeExtension.IncreaseIndenation();
+            sb.AppendCodeLine($"public class {Name}");
+            sb.AppendCodeLine("{");
+            CodeExtension.IncreaseIndenation();
+
+            if (Properties != null)
                 sb.Append(String.Join("\n", Properties.Select(x=>x.ToCode())));
             if(Methods != null)
                 sb.Append(String.Join("\n", Methods.Select(x => x.ToCode())));
+            CodeExtension.DecreaseIndenation();
+            sb.AppendCodeLine("}");
+            CodeExtension.DecreaseIndenation();
+            sb.AppendCodeLine("}");
+
             return sb.ToString();
+
+
         }
+
+
     }
 }
