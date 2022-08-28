@@ -13,5 +13,6 @@ jobs:
       with:
         server: konvicka.php5.cz
         username: konvicka
+        local-dir: ./client/
         server-dir: ./diagramr/
         password: ${{ secrets.ftp_password }}
