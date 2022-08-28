@@ -17,7 +17,7 @@ export class Node{
         this.properties.push(new NodeProperty(name, type, visibility, default_value));
     }
 
-    addMethod(name, visibility, parameters){
-        this.methods.push(new NodeMethod(name, visibility, parameters));
+    addMethod(name, type, visibility, parameters){
+        this.methods.push(new NodeMethod(name, type, visibility, parameters));
     }
 }

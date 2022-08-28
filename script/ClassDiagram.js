@@ -29,7 +29,7 @@ export var selectedObject = null;
 
 var bankAccNode = new Node(1, 'BankAccount');
 bankAccNode.addProperty('owner', 'string', 'public');
-bankAccNode.addMethod('deposit', 'public', [new NodeMethodParameter('amount', 'currency')]);
+bankAccNode.addMethod('deposit', 'void', 'public', [new NodeMethodParameter('amount', 'currency')]);
 
 var hello = new Node(2, 'hello');
 
@@ -156,7 +156,7 @@ export class ClassDiagram {
             
                 var methodTemplate =
                     $(go.Panel, "Horizontal",
-                    // method visibility/access
+                // method visibility/access
                     $(go.TextBlock,
                         { isMultiline: false, editable: false, width: 12 },
                         new go.Binding("text", "visibility", Converts.convertVisibility)),
