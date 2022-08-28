@@ -34,6 +34,7 @@ namespace DiagramrCodeGenerator.Controllers
                         new NodeMethod()
                         {
                             Name = "Pay",
+                            Type = "void",
                             Visibility = "public",
                             Parameters = new List<NodeMethodParameter>()
                             {
